@@ -5,13 +5,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const NO_OF_ROUNDS = 10;
 
-require('dotenv').config();
-
-const JWT_USER_SECRET = process.env.JWT_USER_SECRET
+const { JWT_USER_SECRET } = require('../config/config');
 
 const userRouter = Router();
 
-userRouter.post('/signup', async function(req, res) {
+userRouter.post('/signup', userMiddleware, async function(req, res) {
 
     const { email, password, firstName, lastName } = req.body;
 
@@ -42,7 +40,7 @@ userRouter.post('/signup', async function(req, res) {
 
 });
 
-userRouter.post('/signin', async function(req, res) {
+userRouter.post('/signin', userMiddleware, async function(req, res) {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({

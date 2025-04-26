@@ -5,16 +5,13 @@ const bcrypt = require('bcrypt');
 const { adminModel } = require('../db');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
-
-const JWT_ADMIN_SECRET = process.env.JWT_ADMIN_SECRET;
+const { JWT_ADMIN_SECRET } = require('../config/config');
 
 const NO_OF_ROUNDS = 10;
 
-
 const adminRouter = Router();
 
-adminRouter.post('/signup', async function(req, res) {
+adminRouter.post('/signup', adminMiddleware, async function(req, res) {
 
     const { email, password, firstName, lastName } = req.body;
 
@@ -46,7 +43,7 @@ adminRouter.post('/signup', async function(req, res) {
 
 });
 
-adminRouter.post('/signin', async function(req, res) {
+adminRouter.post('/signin', adminMiddleware, async function(req, res) {
 
     const { email, password } = req.body;
 
